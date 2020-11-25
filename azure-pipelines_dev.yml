@@ -1,0 +1,30 @@
+trigger:
+  branches:
+    include:
+    - master
+
+stages:
+- stage: Dev
+  jobs:
+  - job: Dev
+    pool: 
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - task: DownloadSecureFile@1
+      name: settingsXml
+      displayName: 'Download maven settings file'
+      inputs:
+        secureFile: 'settings.xml'
+    - task: DownloadSecureFile@1
+      name: settingsSecurityXml
+      displayName: 'Download maven security settings file'
+      inputs:
+        secureFile: 'settings-security.xml'
+    - task: PublishPipelineArtifact@1
+      name: publishSettingsXmlToBuildArtifact
+      inputs:
+        targetPath: '$(settingsXml.secureFilePath)'
+    - task: PublishPipelineArtifact@1
+      name: publishSettingsSecurityXmlToBuildArtifact
+      inputs:
+        targetPath: '$(settingsSecurityXml.secureFilePath)'
