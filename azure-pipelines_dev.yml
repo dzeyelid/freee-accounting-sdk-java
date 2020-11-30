@@ -3,6 +3,7 @@ trigger:
     include:
     - master
 
+stages:
 - stage: Dev
   jobs:
   - job: GetSecretFile
