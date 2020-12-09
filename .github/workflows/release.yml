@@ -16,8 +16,8 @@ jobs:
       release_tag: ${{ steps.release_tag.outputs.result }}
 
     steps:
-    - name: Show github.ref
-      run: echo "${{ toJson(github.ref) }}"
+    - name: Show github
+      run: echo "${{ toJson(github) }}"
 
     - name: Check client_payload
       if: ${{ ! (github.ref && contains(github.ref, 'refs/tags/')) }}
@@ -41,8 +41,7 @@ jobs:
       with:
         result-encoding: string
         script: |
-          const words = context.payload.ref.split('/')
-          return words[2]
+          return context.payload.tag_name
 
   build:
     runs-on: ubuntu-latest
