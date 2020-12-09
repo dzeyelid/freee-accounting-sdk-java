@@ -9,6 +9,9 @@ on:
       - created  # temporary for dev
       - edited   # temporary for dev
 
+env:
+  WORKING_DIR: ./sdk
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,6 +28,7 @@ jobs:
     - name: Package
       run: |
         mvn clean package --no-transfer-progress -DperformRelease=true
+      working-directory: ${{ env.WORKING_DIR }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,3 +51,4 @@ jobs:
     - name: Deploy
       run: |
         mvn clean deploy --no-transfer-progress -DperformRelease=true -DskipTests=true -Dchangelist= -Drevision=${{ github.event.release.tag_name }}
+      working-directory: ${{ env.WORKING_DIR }}
