@@ -28,7 +28,6 @@ jobs:
     - uses: actions/github-script@v2
       id: test
       with:
-        result-encoding: string
         script: |
           return context.payload
 
