@@ -26,11 +26,23 @@ jobs:
         exit 1
 
     - uses: actions/github-script@v2
+      id: test
+      with:
+        result-encoding: string
+        script: |
+          return context.payload
+
+    - name: test
+      run: echo "$PAYLOAD"
+      env:
+        PAYLOAD: ${{ steps.test.outputs.result }}
+
+    - uses: actions/github-script@v2
       id: release_tag
       with:
         result-encoding: string
         script: |
-          const words = github.ref.split('/')
+          const words = context.payload.ref.split('/')
           return words[2]
 
   build:
