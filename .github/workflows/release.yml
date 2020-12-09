@@ -5,14 +5,19 @@ on:
   release:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Show gpg version
-        run: gpg --version
+      - name: Decode MAVEN_GPG_PRIVATE_KEY
+        id: decoded_maven_gpg_private_key
+        uses: actions/github-script@v3
+          script: |
+            return atob(process.env.MAVEN_GPG_PRIVATE_KEY)
+        env:
+          MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
 
       - name: Setup JDK 1.8
         uses: actions/setup-java@v1
@@ -22,5 +27,5 @@ jobs:
           server-id: dev
           server-username: MAVEN_USERNAME
           server-password: MAVEN_USER_PASSWORD
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-private-key: ${{ steps.decoded_maven_gpg_private_key.outputs.result }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
