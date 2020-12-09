@@ -30,8 +30,7 @@ jobs:
       with:
         result-encoding: string
         script: |
-          const { origin_ref } = context.payload.client_payload
-          const words = origin_ref.split('/')
+          const words = github.ref.split('/')
           return words[2]
 
   build:
