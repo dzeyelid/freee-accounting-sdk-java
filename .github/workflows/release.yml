@@ -35,7 +35,7 @@ jobs:
     - name: test
       run: echo "$PAYLOAD"
       env:
-        PAYLOAD: ${{ steps.test.outputs.result }}
+        PAYLOAD: ${{ toJson(steps.test.outputs.result) }}
 
     - uses: actions/github-script@v2
       id: release_tag
