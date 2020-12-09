@@ -52,3 +52,7 @@ jobs:
       run: |
         mvn clean deploy --no-transfer-progress -DperformRelease=true -DskipTests=true -Dchangelist= -Drevision=${{ github.event.release.tag_name }}
       working-directory: ${{ env.WORKING_DIR }}
+      env:
+        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+        MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_USER_PASSWORD }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
