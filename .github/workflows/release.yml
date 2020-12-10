@@ -24,7 +24,7 @@ jobs:
       with:
         java-version: ${{ env.JAVA_VERSION }}
         java-package: ${{ env.JAVA_PACKAGE }}
-        architecture: ${{ env.ARCHITECTURE }}
+        architecture: ${{ env.JAVA_ARCHITECTURE }}
 
     - name: Package
       run: |
@@ -42,7 +42,7 @@ jobs:
       with:
         java-version: ${{ env.JAVA_VERSION }}
         java-package: ${{ env.JAVA_PACKAGE }}
-        architecture: ${{ env.ARCHITECTURE }}
+        architecture: ${{ env.JAVA_ARCHITECTURE }}
         server-id: dev
         server-username: MAVEN_USERNAME
         server-password: MAVEN_USER_PASSWORD
