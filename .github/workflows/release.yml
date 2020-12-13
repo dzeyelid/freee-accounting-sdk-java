@@ -3,7 +3,9 @@ name: Release artifacts
 on:
   release:
     types:
-      - published
+      - created
+      - edited
+      # - published
       # - prereleased
       # - released
 
