@@ -1,3 +1,6 @@
 {
-    "body": "Hello world"
+  "body": "Hello world",
+  "nested": {
+      "body": "How are you?"
+  }
 }
