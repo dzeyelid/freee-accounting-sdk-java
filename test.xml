@@ -1,4 +1,4 @@
-<settings>
+<configuration>
   <configSections>
     <section name="body">Hello world</properties>
     <section name="nested.body">How are you?</properties>
@@ -28,4 +28,4 @@
     <properties name="body">Hello world</properties>
     <properties key="nested.body">How are you?</properties>
   </config>
-</settings>
+</configuration>
