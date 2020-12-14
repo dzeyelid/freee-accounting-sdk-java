@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <configSections>
-    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
-    <section name="target">
-      <target name="body">Hello world</target>
-      <target key="nested.body">How are you?</target>
-    </section>
+    <section name="targetElements">
   </configSections>
   <connectionStrings>
     <add name="body" connectionString="Hello world" />
@@ -25,6 +21,10 @@
       </setting>
     </myCustomSection>
   </applicationSettings>
-  <contents>
-  </contents>
+  <targetElements>
+    <property body="Hollo world" />
+    <properties>
+      <property nested.body="How are you?" />
+    </properties>
+  </targetElements>
 </configuration>
