@@ -27,6 +27,8 @@ jobs:
         blatvar: ApplicationSettingReplacedValue
         log_level: error,warning
         Email:ToOverride: ''
+        body: Hooray!
+        nested.body: Fine!
 
     - name: Show
       run: |
