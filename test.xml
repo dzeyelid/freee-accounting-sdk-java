@@ -28,6 +28,7 @@ brackets or the greater-than sign using concatenated CDATA sections.
     <add name="InvalidName"  conntype="conntype" providerName="System.Data.SqlClient" />
     <add name="ParameterConnection"  conntype="conntype" connectionString="$(ReplacableToken_DefaultConnection-Web.config Connection String_0)" />
     <add name="NoConnectionName"  conntype="conntype" connectionString="NoConnectionName" />
+    <add name="body"  conntype="conntype" connectionString="Hello world" />
   </connectionStrings>
   <appSettings>
     <add key="webpages:Version" value="3.0.0.0" />
