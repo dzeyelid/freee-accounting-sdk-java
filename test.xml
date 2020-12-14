@@ -1,31 +1,6 @@
 <configration>
-  <configSections>
-    <section name="body">Hello world</section>
-    <section name="nested.body">How are you?</section>
-  </configSections>
-
   <connectionStrings>
     <properties name="body" connectionString="Hello world" />
     <nested.body connectionString="Hello world" />
   </connectionStrings>
-
-  <appSettings>
-    <properties name="body">Hello world</properties>
-    <properties key="nested.body">How are you?</properties>
-  </appSettings>
-
-  <applicationSettings>
-    <properties name="body">Hello world</properties>
-    <properties key="nested.body">How are you?</properties>
-  </applicationSettings>
-
-  <appsettings>
-    <properties name="body">Hello world</properties>
-    <properties key="nested.body">How are you?</properties>
-  </appsettings>
-
-  <config>
-    <properties name="body">Hello world</properties>
-    <properties key="nested.body">How are you?</properties>
-  </config>
 </configuration>
