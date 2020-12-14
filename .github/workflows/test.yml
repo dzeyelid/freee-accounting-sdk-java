@@ -14,7 +14,7 @@ jobs:
       with:
         files: sdk/pom.xml
       env:
-        project.version: v0.0.1-dev
+        revision: v0.0.1-dev
         # project.distributionManagement.repository.id: dev
         # project.distributionManagement.repository.url: http://20.194.192.208:8081/nexus/content/repositories/dev
         # project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[0]: --pinentry-mode
