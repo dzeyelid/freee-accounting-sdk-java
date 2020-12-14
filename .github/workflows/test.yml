@@ -22,4 +22,4 @@ jobs:
 
     - name: Show
       run: |
-        git show
+        git diff
