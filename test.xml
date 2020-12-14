@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <configSections>
-    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false"/>
+    <section name="customizedSection" type="" />
   </configSections>
   <connectionStrings>
     <add name="body" connectionString="Hello world" />
@@ -21,14 +21,9 @@
       </setting>
     </myCustomSection>
   </applicationSettings>
-  <entityFramework>
-    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework">
-      <parameters>
-        <parameter body="Hello world"  rmtype="rmapptype"/>
-      </parameters>
-    </defaultConnectionFactory>
-    <providers>
-      <provider body="Hello world" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer" />
-    </providers>
-  </entityFramework>
+  <customizedSection>
+    <parameters>
+      <parameter body="Hello world" />
+    </parameters>
+  </customizedSection>
 </configuration>
