@@ -24,3 +24,8 @@ jobs:
     - name: Show
       run: |
         git diff
+
+    - uses: actions/upload-artifact@v2
+      with:
+          name: updatedXmlFile
+          path: test.xml
