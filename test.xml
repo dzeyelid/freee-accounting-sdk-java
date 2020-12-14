@@ -2,23 +2,26 @@
 <configuration>
   <configSections>
     <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
-    <section name="body" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    <section name="target">
+      <target name="body">Hello world</target>
+      <target key="nested.body">How are you?</target>
+    </section>
   </configSections>
   <connectionStrings>
-    <add name="body"  conntype="conntype" connectionString="Hello world" />
-    <add name="nested.body"  conntype="conntype" connectionString="Hello world" />
+    <add name="body" connectionString="Hello world" />
+    <add name="nested.body" connectionString="How are you?" />
   </connectionStrings>
   <appSettings>
-    <add key="body" value="3.0.0.0" />
-    <add key="nested.body" value="false" />
+    <add key="body" value="Hollo world" />
+    <add key="nested.body" value="How are you?" />
   </appSettings>
   <applicationSettings>
     <myCustomSection>
       <setting name="body" serializeAs="String">
-          <value>blart</value>
+          <value>Hello world</value>
       </setting>
       <setting name="nested.body" serializeAs="String">
-          <value>blart</value>
+          <value>How are you?</value>
       </setting>
     </myCustomSection>
   </applicationSettings>
