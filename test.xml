@@ -23,8 +23,5 @@
   </applicationSettings>
   <targetElements>
     <property body="Hollo world" />
-    <properties>
-      <property nested.body="How are you?" />
-    </properties>
   </targetElements>
 </configuration>
