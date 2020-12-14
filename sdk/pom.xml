@@ -32,20 +32,14 @@
     </developers>
 
     <distributionManagement>
-        <!-- <snapshotRepository>
+        <snapshotRepository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository> -->
-
-        <repository>
-            <id>dev</id>
-            <url>http://20.194.192.208:8081/nexus/content/repositories/dev</url>
         </repository>
-
     </distributionManagement>
 
     <build>
@@ -208,12 +202,6 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
-                                <configuration>
-                                    <gpgArguments>
-                                        <arg>--pinentry-mode</arg>
-                                        <arg>loopback</arg>
-                                    </gpgArguments>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
