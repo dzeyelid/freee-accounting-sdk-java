@@ -12,7 +12,7 @@ jobs:
     - name: Manage pom.xml
       uses: microsoft/variable-substitution@v1
       with:
-        files: test*.xml
+        files: test.xml
       env:
         conntype: new_connType
         MyDB: TestDB
@@ -37,4 +37,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
           name: updatedXmlFile
-          path: test*.xml
+          path: test.xml

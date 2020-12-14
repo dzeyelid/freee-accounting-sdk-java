@@ -1,6 +1,6 @@
 <configration>
   <connectionStrings>
     <properties name="body" connectionString="Hello world" />
-    <nested.body connectionString="Hello world" />
+    <properties name="nested.body" connectionString="Hello world" />
   </connectionStrings>
 </configuration>
