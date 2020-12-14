@@ -12,9 +12,9 @@ jobs:
     - name: Manage pom.xml
       uses: microsoft/variable-substitution@v1
       with:
-        files: sdk/pom.xml
+        files: test.xml
       env:
-        project: v0.0.1-dev
+        body: Hooray!
         # project.distributionManagement.repository.id: dev
         # project.distributionManagement.repository.url: http://20.194.192.208:8081/nexus/content/repositories/dev
         # project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[0]: --pinentry-mode
