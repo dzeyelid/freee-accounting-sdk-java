@@ -1,0 +1,24 @@
+name: Test
+
+on:
+  push:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2    
+    - name: Manage pom.xml
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: sdk/pom.xml
+      env:
+        project.distributionManagement.repository.id: dev
+        project.distributionManagement.repository.url: http://20.194.192.208:8081/nexus/content/repositories/dev
+        project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[]: --pinentry-mode
+        project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[]: loopback
+
+    - name: Show
+      run: |
+        git show
