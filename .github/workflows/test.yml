@@ -16,8 +16,8 @@ jobs:
       env:
         project.distributionManagement.repository.id: dev
         project.distributionManagement.repository.url: http://20.194.192.208:8081/nexus/content/repositories/dev
-        project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[]: --pinentry-mode
-        project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[]: loopback
+        project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[0]: --pinentry-mode
+        project.profiles.profile.build.plugins.plugin.executions.execution.configuration.gpgArguments.arg[1]: loopback
 
     - name: Show
       run: |
