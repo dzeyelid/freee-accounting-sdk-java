@@ -1,2 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<properties name="body">Hello world</properties>
+<connectionStrings>
+  <properties name="body">Hello world</properties>
+  <properties key="nested.body">How are you?</properties>
+</connectionStrings>
+
+<appSettings>
+  <properties name="body">Hello world</properties>
+  <properties key="nested.body">How are you?</properties>
+</appSettings>
+
+<applicationSettings>
+  <properties name="body">Hello world</properties>
+  <properties key="nested.body">How are you?</properties>
+</applicationSettings>
+
+<configSections>
+  <properties name="body">Hello world</properties>
+  <properties key="nested.body">How are you?</properties>
+</configSections>
+
+<appsettings>
+  <properties name="body">Hello world</properties>
+  <properties key="nested.body">How are you?</properties>
+</appsettings>
+
+<config>
+  <properties name="body">Hello world</properties>
+  <properties key="nested.body">How are you?</properties>
+</config>
