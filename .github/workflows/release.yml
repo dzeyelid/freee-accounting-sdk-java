@@ -49,6 +49,19 @@ jobs:
         gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
+    - name: Change repository (for dev)
+      shell: pwsh
+      working-directory: ./sdk
+      run: |
+        [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
+        $path = "pom.xml"
+        $doc = [System.Xml.Linq.XElement]::Load($path)
+        $ns = $doc.GetDefaultnamespace()
+        $repo = $doc.Element($ns + "distributionManagement").Element($ns + "repository")
+        $repo.Element($ns + "id").Value = "dev"
+        $repo.Element($ns + "url").Value = "http://20.194.192.208:8081/nexus/content/repositories/dev"
+        $doc.save($path)
+
     - name: Deploy
       run: |
         mvn clean deploy --batch-mode --no-transfer-progress -DperformRelease=true -DskipTests=true -Dchangelist= -Drevision=${{ github.event.release.tag_name }}
