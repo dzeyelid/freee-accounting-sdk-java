@@ -49,11 +49,6 @@ jobs:
         gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-    - name: Update sdk/pom.xml
-      shell: pwsh
-      run: |
-        ./.github/workflows/update-pom-xml.ps1
-
     - name: Change repository (for dev)
       shell: pwsh
       working-directory: ./sdk
