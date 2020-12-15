@@ -17,7 +17,7 @@ jobs:
     - name: Check client_payload
       if: ${{ ! (github.event.client_payload.origin_ref && contains(github.event.client_payload.origin_ref, 'refs/tags/')) }}
       run: |
-        echo ${{ event }}
+        echo ${{ EVENT }}
         echo '::error::Invalid request'
         exit 1
       env:
