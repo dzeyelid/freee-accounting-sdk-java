@@ -52,7 +52,7 @@ jobs:
     - name: Update sdk/pom.xml
       shell: pwsh
       run: |
-        ./update-pom-xml.ps1
+        ./.github/workflows/update-pom-xml.ps1
 
     - name: Change repository (for dev)
       shell: pwsh
