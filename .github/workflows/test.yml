@@ -3,38 +3,56 @@ name: Test
 on:
   push:
 
+env:
+  REPOSITORY_ID: dev
+  REPOSITORY_URL: http://20.194.192.208:8081/nexus/content/repositories/dev
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2    
-    - name: Manage pom.xml
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: test.xml
-      env:
-        conntype: new_connType
-        MyDB: TestDB
-        webpages:Version: 1.1.7.3
-        xdt:Transform: DelAttributes
-        xdt:Locator: Match(tag)
-        DefaultConnection: Url=https://primary;Database=db1;ApiKey=11111111-1111-1111-1111-111111111111;Failover = {Url:'https://secondary', ApiKey:'11111111-1111-1111-1111-111111111111'}
-        OtherDefaultConnection: connectionStringValue2
-        ParameterConnection: New_Connection_String From xml var subs
-        connectionString: replaced_value
-        invariantName: System.Data.SqlServer
-        blatvar: ApplicationSettingReplacedValue
-        log_level: error,warning
-        Email:ToOverride: ''
-        body: Hooray!
-        nested.body: Fine!
+    # - name: Manage pom.xml
+    #   uses: microsoft/variable-substitution@v1
+    #   with:
+    #     files: test.xml
+    #   env:
+    #     body: Hooray!
+    #     nested.body: Fine!
 
-    - name: Show
+    # - name: Show
+    #   run: |
+    #     git diff
+
+    # - uses: actions/upload-artifact@v2
+    #   with:
+    #       name: updatedXmlFile
+    #       path: test.xml
+
+    - name: Update sdk/pom.xml
+      shell: pwsh
+      working-directory: ./sdk
       run: |
-        git diff
+        [Reflection.Assembly]::LoadWithPartialName("System.Xml.Linq")
+        $path = "pom.xml"
+        $doc = [System.Xml.Linq.XElement]::Load($path)
+        $ns = $doc.GetDefaultnamespace()
+        $configrationElement = [System.Xml.Linq.XElement]::New(
+          $ns + "configration",
+          [System.Xml.Linq.XElement]::New(
+            $ns + "gpgArguments",
+            [System.Xml.Linq.XElement]::New($ns + "arg", "--pinentry-mode"),
+            [System.Xml.Linq.XElement]::New($ns + "arg", "loopback")
+          )
+        )
+        $doc.Descendants($ns + "plugin").Where({$_.Element($ns + "artifactId").Value -eq "maven-gpg-plugin"}).Descendants($ns + "execution").Add($configrationElement)
+        $repo = $doc.Element($ns + "distributionManagement").Element($ns + "repository")
+        $repo.Element($ns + "id").Value = "dev"
+        $repo.Element($ns + "url").Value = "http://20.194.192.208:8081/nexus/content/repositories/dev"
+        $doc.save($path)
 
     - uses: actions/upload-artifact@v2
       with:
-          name: updatedXmlFile
-          path: test.xml
+          name: updatedPomXmlFile
+          path: sdk/pom.xml
