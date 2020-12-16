@@ -17,11 +17,8 @@ jobs:
     - name: Check client_payload
       if: ${{ ! (github.event.client_payload.origin_ref && contains(github.event.client_payload.origin_ref, 'refs/tags/')) }}
       run: |
-        echo $EVENT
-        echo '::error::Invalid request'
+        echo '::error::Invalid event request'
         exit 1
-      env:
-        EVENT: ${{ toJson(github.event) }}
 
     - uses: actions/github-script@v2
       id: release_tag
@@ -60,7 +57,16 @@ jobs:
     - name: Update sdk/pom.xml
       shell: pwsh
       run: |
-        ./update-pom-xml.ps1
+        ./.github/workflows/update-pom-xml.ps1
+      env:
+        MAVEN_GPG_PLUGIN_VERSION: 1.6
+
+    - name: Revert ApiClient
+      if: ${{ env.KEEP_CURRENT_HEADER_SELECTOR }}
+      run: |
+        git checkout \
+          sdk/src/main/java/jp/co/freee/accounting/ApiClient.java \
+          sdk/src/main/java/jp/co/freee/accounting/DefaultHeaders.java
 
     - name: Git
       run: |
