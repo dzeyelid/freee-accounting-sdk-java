@@ -16,7 +16,6 @@ import jp.co.freee.accounting.models.ForbiddenError;
 import jp.co.freee.accounting.models.InlineResponse20015;
 import jp.co.freee.accounting.models.InlineResponse20016;
 import jp.co.freee.accounting.models.InternalServerError;
-import jp.co.freee.accounting.models.MeResponse;
 import jp.co.freee.accounting.models.UnauthorizedError;
 import jp.co.freee.accounting.models.UserParams;
 import jp.co.freee.accounting.models.UserResponse;
@@ -48,17 +47,6 @@ public interface UsersApi {
   @GET("api/1/users/capabilities")
   Observable<InlineResponse20016> getUsersCapabilities(
     @retrofit2.http.Query("company_id") Integer companyId
-  );
-
-  /**
-   * ログインユーザー情報の取得
-   *  &lt;h2 id&#x3D;\&quot;\&quot;&gt;概要&lt;/h2&gt;  &lt;p&gt;ユーザーの情報を取得する&lt;/p&gt;
-   * @param companies 取得情報にユーザーが所属する事業所一覧を含める (optional)
-   * @return Observable&lt;MeResponse&gt;
-   */
-  @GET("api/1/users/me")
-  Observable<MeResponse> getUsersMe(
-    @retrofit2.http.Query("companies") Boolean companies
   );
 
   /**

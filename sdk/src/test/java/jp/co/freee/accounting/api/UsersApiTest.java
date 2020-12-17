@@ -7,7 +7,6 @@ import jp.co.freee.accounting.models.ForbiddenError;
 import jp.co.freee.accounting.models.InlineResponse20015;
 import jp.co.freee.accounting.models.InlineResponse20016;
 import jp.co.freee.accounting.models.InternalServerError;
-import jp.co.freee.accounting.models.MeResponse;
 import jp.co.freee.accounting.models.UnauthorizedError;
 import jp.co.freee.accounting.models.UserParams;
 import jp.co.freee.accounting.models.UserResponse;
@@ -53,18 +52,6 @@ public class UsersApiTest {
     public void getUsersCapabilitiesTest() {
         Integer companyId = null;
         // InlineResponse20016 response = api.getUsersCapabilities(companyId);
-
-        // TODO: test validations
-    }
-    /**
-     * ログインユーザー情報の取得
-     *
-     *  &lt;h2 id&#x3D;\&quot;\&quot;&gt;概要&lt;/h2&gt;  &lt;p&gt;ユーザーの情報を取得する&lt;/p&gt;
-     */
-    @Test
-    public void getUsersMeTest() {
-        Boolean companies = null;
-        // MeResponse response = api.getUsersMe(companies);
 
         // TODO: test validations
     }
