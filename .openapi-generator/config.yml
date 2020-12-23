@@ -1,12 +1,12 @@
 ensureUniqueParams: false
 allowUnicodeIdentifiers: true
 snapshotVersion: true
-artifactVersion: 2.0.0-beta
+artifactVersion: 0.1.1
 groupId: "jp.co.freee"
 artifactId: "freee-accounting-sdk"
-apiPackage:     "jp.co.freee.accounting.api"
+apiPackage: "jp.co.freee.accounting.api"
 invokerPackage: "jp.co.freee.accounting"
-modelPackage:  "jp.co.freee.accounting.models"
+modelPackage: "jp.co.freee.accounting.models"
 allowUnicodeIdentifiers: true
 hideGenerationTimestamp: true
 java8: true
