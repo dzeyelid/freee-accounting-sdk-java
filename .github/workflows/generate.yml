@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       TARGET_VERSION: ${{ github.event.pull_request.title }}
-      ORIGINAL_REPO_TAG: ${{ steps.get_original_repo_tag.ouptputs.tag }}
+      ORIGINAL_REPO_TAG: ${{ steps.get_original_repo_tag.outputs.tag }}
     steps:
       - name: Check labels
         if: ${{ github.event.name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, env.PULL_REQUEST_LABEL) }}
@@ -38,7 +38,7 @@ jobs:
         run: |
           echo $OUTPUT
         env:
-          OUTPUT: ${{ steps.get_original_repo_tag.ouptputs.tag }}
+          OUTPUT: ${{ steps.get_original_repo_tag.outputs.tag }}
 
   generate:
     name: Generate code and push them
