@@ -45,7 +45,7 @@ jobs:
 
       - run: echo $RESULT | jq
         env:
-          RESULT: ${{ fromJson(steps.run_script.outputs.result) }}
+          RESULT: ${{ steps.run_script.outputs.result }}
 
       - name: Calculate next release version
         id: next_release_sdk_version
