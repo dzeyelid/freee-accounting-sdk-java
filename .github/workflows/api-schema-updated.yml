@@ -31,7 +31,6 @@ jobs:
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          debug: true
           script: |
             const { origin_ref } = context.payload.client_payload;
             const words = origin_ref.split('/');
@@ -43,26 +42,11 @@ jobs:
 
             return {apiSchemaReleaseTag, currentSdkVersion};
 
-
-      - run: echo $RESULT
-        env:
-          RESULT: ${{ steps.run_script.outputs.result.currentSdkVersion }}
-
-      - name: invalid
-        run: echo $RESULT
-        env:
-          RESULT: ${{ steps.run_script.outputs.result.test }}
-
-      - name: fromJson
-        run: echo $RESULT
-        env:
-          RESULT: ${{ fromJson(steps.run_script.outputs.result).currentSdkVersion }}
-
       - name: Calculate next release version
         id: next_release_sdk_version
         uses: christian-draeger/increment-semantic-version@1.0.2
         with:
-          current-version: ${{ steps.run_script.outputs.result.currentSdkVersion }}
+          current-version: ${{ fromJson(steps.run_script.outputs.result).currentSdkVersion }}
           version-fragment: 'feature'
 
   create_pull_request:
