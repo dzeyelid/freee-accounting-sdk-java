@@ -1,84 +1,88 @@
 name: Generate SDK
 
 on:
-  repository_dispatch:
-    types: [generate-sdk]
+  pull_request:
+    types:
+      - labeled
+      - edited
 
 env:
-  PACKAGE_NAME: freee/freee-accounting-sdk
+  PULL_REQUEST_LABEL: auto-generate
   SCHEMA_URL_TEMP: https://gist.githubusercontent.com/shibayan/3fdf5a66554e5e7ccfe4cc8350db86d7/raw/64548c7ad8bb4c65c0bbe1748ca8f759da648aa6/api-schema.yml
   KEEP_CURRENT_HEADER_SELECTOR: true
+  MAVEN_GPG_PLUGIN_VERSION: 1.6
   
 jobs:
+  preprocess:
+    name: Check pull request
+    runs-on: ubuntu-latest
+    outputs:
+      TARGET_VERSION: ${{ github.event.pull_request.title }}
+    steps:
+      - name: Check labels
+        if: ${{ github.event.name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, env.PULL_REQUEST_LABEL) }}
+        run: |
+          echo '::warning::This pull request event does not have valid label'
+          exit 1
+
   generate:
+    name: Generate code and push them
+    needs:
+      - preprocess
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check client_payload
-      if: ${{ ! (github.event.client_payload.origin_ref && contains(github.event.client_payload.origin_ref, 'refs/tags/')) }}
-      run: |
-        echo '::error::Invalid event request'
-        exit 1
+      - name: Install packages
+        run: |
+          sudo snap install yq
 
-    - uses: actions/github-script@v2
-      id: release_tag
-      with:
-        result-encoding: string
-        script: |
-          const { origin_ref } = context.payload.client_payload
-          const words = origin_ref.split('/')
-          return words[2]
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          ref: ${{ github.head_ref }}
 
-    - name: Install packages
-      run: |
-        sudo snap install yq
+      - name: Remove old codes
+        run: |
+          rm -rf sdk/src sdk/docs sdk/target sdk/pom.xml
 
-    - uses: actions/checkout@v2    
+      - name: Update lib version
+        run: |
+          yq write -i .openapi-generator/config.yml artifactVersion ${{ needs.preprocess.outputs.TARGET_VERSION }}
 
-    - name: Remove old codes
-      run: |
-        rm -rf sdk/src sdk/docs sdk/target sdk/pom.xml
+      - name: Generate APIs
+        env:
+          SCHEMA_URL: https://raw.githubusercontent.com/freee/freee-api-schema/${{ steps.release_tag.outputs.result }}/v2020_06_15/open-api-3/api-schema.yml
+        run: |
+          docker run --rm -u "$(id -u $USER):$(id -g $USER)" -v "${PWD}:/local" openapitools/openapi-generator-cli:latest-release generate \
+            -i ${{ env.SCHEMA_URL_TEMP }} \
+            -c /local/.openapi-generator/config.yml \
+            -g java \
+            -o /local/sdk
+          cd sdk && rm -rf .gradle/ .openapi-generator .openapi-generator-ignore .travis.yml build.gradle  build.sbt  git_push.sh gradle.properties gradle gradlew gradlew.bat settings.gradle README.md api/openapi.yaml
 
-    - name: Update lib version
-      run: |
-        yq write -i .openapi-generator/config.yml artifactVersion ${{ steps.release_tag.outputs.result }}
+      - name: Update sdk/pom.xml
+        shell: pwsh
+        run: |
+          ./.github/workflows/update-pom-xml.ps1
+        env:
+          MAVEN_GPG_PLUGIN_VERSION: ${{ env.MAVEN_GPG_PLUGIN_VERSION }}
 
-    - name: Generate APIs
-      env:
-        SCHEMA_URL: https://raw.githubusercontent.com/freee/freee-api-schema/${{ steps.release_tag.outputs.result }}/v2020_06_15/open-api-3/api-schema.yml
-      run: |
-        docker run --rm -u "$(id -u $USER):$(id -g $USER)" -v "${PWD}:/local" openapitools/openapi-generator-cli:latest-release generate \
-          -i ${{ env.SCHEMA_URL_TEMP }} \
-          -c /local/.openapi-generator/config.yml \
-          -g java \
-          -o /local/sdk
-        cd sdk && rm -rf .gradle/ .openapi-generator .openapi-generator-ignore .travis.yml  build.gradle  build.sbt  git_push.sh gradle.properties gradle gradlew gradlew.bat settings.gradle README.md api/openapi.yaml
+      - name: Revert ApiClient
+        if: ${{ env.KEEP_CURRENT_HEADER_SELECTOR }}
+        run: |
+          git checkout \
+            sdk/src/main/java/jp/co/freee/accounting/ApiClient.java \
+            sdk/src/main/java/jp/co/freee/accounting/DefaultHeaders.java
 
-    - name: Update sdk/pom.xml
-      shell: pwsh
-      run: |
-        ./.github/workflows/update-pom-xml.ps1
-      env:
-        MAVEN_GPG_PLUGIN_VERSION: 1.6
+      - name: Git
+        run: |
+          git config --local user.name "API Generator"
+          git add .
+          git commit -m "Generate SDK code for ${{ needs.preprocess.outputs.TARGET_VERSION }}"
 
-    - name: Revert ApiClient
-      if: ${{ env.KEEP_CURRENT_HEADER_SELECTOR }}
-      run: |
-        git checkout \
-          sdk/src/main/java/jp/co/freee/accounting/ApiClient.java \
-          sdk/src/main/java/jp/co/freee/accounting/DefaultHeaders.java
-
-    - name: Git
-      run: |
-        git stash push .openapi-generator/config.yml
-        git fetch
-        git checkout master
-        git config --local user.name "API Generator"
-        git stash pop
-        git add .
-        git commit -m "Generated by release ${{ steps.release_tag.outputs.result }}"
-        git reset --hard HEAD
-        git clean -fdx
-
-    - name: Create pull request
-      uses: peter-evans/create-pull-request@v3
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
