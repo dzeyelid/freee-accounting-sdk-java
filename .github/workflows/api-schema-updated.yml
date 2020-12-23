@@ -31,6 +31,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          debug: true
           script: |
             const { origin_ref } = context.payload.client_payload;
             const words = origin_ref.split('/');
@@ -40,8 +41,13 @@ jobs:
             const script = require(`${scriptDir}/get-latest-release-version.js`);
             const currentSdkVersion = script({github, context});
 
-            return {apiSchemaReleaseTag, currentSdkVersion};
+            const result = {apiSchemaReleaseTag, currentSdkVersion};
+            console.log(result);
+            return result;
 
+      - run: echo $RESULT | jq
+        env:
+          RESULT: ${{ toJson(steps.run_script.outputs.result) }}
 
       - name: Calculate next release version
         id: next_release_sdk_version
