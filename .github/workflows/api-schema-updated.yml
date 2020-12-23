@@ -43,9 +43,20 @@ jobs:
 
             return {apiSchemaReleaseTag, currentSdkVersion};
 
+
       - run: echo $RESULT
         env:
           RESULT: ${{ steps.run_script.outputs.result.currentSdkVersion }}
+
+      - name: invalid
+        run: echo $RESULT
+        env:
+          RESULT: ${{ steps.run_script.outputs.result.test }}
+
+      - name: fromJson
+        run: echo $RESULT
+        env:
+          RESULT: ${{ fromJson(steps.run_script.outputs.result).currentSdkVersion }}
 
       - name: Calculate next release version
         id: next_release_sdk_version
