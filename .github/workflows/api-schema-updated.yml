@@ -31,6 +31,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
           debug: true
           script: |
             const { origin_ref } = context.payload.client_payload;
