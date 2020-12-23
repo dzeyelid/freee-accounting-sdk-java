@@ -38,16 +38,10 @@ jobs:
             const apiSchemaReleaseTag = words[2];
 
             const scriptDir = `${process.env.GITHUB_WORKSPACE}/.github/workflows/scripts`;
-            const script = require(`${scriptDir}/get-latest-release-version.js`);
-            const currentSdkVersion = script({github, context});
+            const getLatestReleaseVersion = require(`${scriptDir}/get-latest-release-version.js`);
+            const currentSdkVersion = await getLatestReleaseVersion({github, context});
 
-            const result = {apiSchemaReleaseTag, currentSdkVersion};
-            console.log(result);
-            return result;
-
-      - run: echo $RESULT | jq
-        env:
-          RESULT: ${{ toJson(steps.run_script.outputs.result) }}
+            return {apiSchemaReleaseTag, currentSdkVersion};
 
       - name: Calculate next release version
         id: next_release_sdk_version
