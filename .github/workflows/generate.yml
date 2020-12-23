@@ -18,12 +18,27 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       TARGET_VERSION: ${{ github.event.pull_request.title }}
+      ORIGINAL_REPO_TAG: ${{ steps.get_original_repo_tag.ouptputs.tag }}
     steps:
       - name: Check labels
         if: ${{ github.event.name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, env.PULL_REQUEST_LABEL) }}
         run: |
           echo '::warning::This pull request event does not have valid label'
           exit 1
+
+      - name: Get original repo tag
+        id: get_original_repo_tag
+        run: |
+          TAG=`echo $PULL_REQUEST_BODY | sed -E -n 's/tag:\s*(.+)/\1/p'`
+          echo "::set-output name=tag::$TAG"
+        env:
+          PULL_REQUEST_BODY: ${{ github.event.pull_request.body }}
+
+      - name: Output
+        run: |
+          echo $OUTPUT
+        env:
+          OUTPUT: ${{ steps.get_original_repo_tag.ouptputs.tag }}
 
   generate:
     name: Generate code and push them
@@ -52,14 +67,14 @@ jobs:
 
       - name: Generate APIs
         env:
-          SCHEMA_URL: https://raw.githubusercontent.com/freee/freee-api-schema/${{ steps.release_tag.outputs.result }}/v2020_06_15/open-api-3/api-schema.yml
+          SCHEMA_URL: https://raw.githubusercontent.com/freee/freee-api-schema/${{ needs.preprocess.outputs.ORIGINAL_REPO_TAG }}/_sdk_compatible/open-api-3/api-schema.yml
         run: |
           docker run --rm -u "$(id -u $USER):$(id -g $USER)" -v "${PWD}:/local" openapitools/openapi-generator-cli:latest-release generate \
             -i ${{ env.SCHEMA_URL_TEMP }} \
             -c /local/.openapi-generator/config.yml \
             -g java \
             -o /local/sdk
-          cd sdk && rm -rf .gradle/ .openapi-generator .openapi-generator-ignore .travis.yml build.gradle  build.sbt  git_push.sh gradle.properties gradle gradlew gradlew.bat settings.gradle README.md api/openapi.yaml
+          cd sdk && rm -rf .gradle/ .openapi-generator .openapi-generator-ignore .travis.yml build.gradle build.sbt git_push.sh gradle.properties gradle gradlew gradlew.bat settings.gradle README.md api/openapi.yaml
 
       - name: Update sdk/pom.xml
         shell: pwsh
