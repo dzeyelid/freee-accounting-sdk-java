@@ -14,7 +14,7 @@ env:
   
 jobs:
   preprocess:
-    name: Check pull request
+    name: Pre process
     runs-on: ubuntu-latest
     outputs:
       TARGET_VERSION: ${{ github.event.pull_request.title }}
@@ -29,7 +29,7 @@ jobs:
       - name: Get original repo tag
         id: get_original_repo_tag
         run: |
-          TAG=`echo $PULL_REQUEST_BODY | sed -E -n 's/tag:\s*(.+)/\1/p'`
+          TAG=`echo $PULL_REQUEST_BODY | sed -E -n 's/(.*)tag:\s*(.+)\s*$/\2/p'`
           echo "::set-output name=tag::$TAG"
         env:
           PULL_REQUEST_BODY: ${{ github.event.pull_request.body }}
