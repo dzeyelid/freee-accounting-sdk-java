@@ -4,7 +4,7 @@ $doc = [System.Xml.Linq.XElement]::Load($path)
 $ns = $doc.GetDefaultnamespace()
 
 # Modify project information
-$versionSplit = $doc.Element($ns + "version").Value - split "-"
+$versionSplit = $doc.Element($ns + "version").Value -split "-"
 $revision = $versionSplit[0]
 $changelist = "-" + $versionSplit[1]
 $doc.Element($ns + "version").Value = "`${revision}`${changelist}"
