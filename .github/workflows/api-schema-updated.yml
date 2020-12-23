@@ -14,7 +14,7 @@ jobs:
     name: Pre process
     runs-on: ubuntu-latest
     outputs:
-      RELEASE_TAG: ${{ steps.run_script.outputs.result.apiSchemaReleaseTag }}
+      RELEASE_TAG: ${{ fromJson(steps.run_script.outputs.result).apiSchemaReleaseTag }}
       NEXT_VERSION: ${{ steps.next_release_sdk_version.outputs.next-version }}
 
     steps:

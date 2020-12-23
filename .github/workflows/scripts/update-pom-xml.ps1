@@ -4,13 +4,15 @@ $doc = [System.Xml.Linq.XElement]::Load($path)
 $ns = $doc.GetDefaultnamespace()
 
 # Modify project information
-$version = $doc.Element($ns + "version").Value
+$versionSplit = $doc.Element($ns + "version").Value - split "-"
+$revision = $versionSplit[0]
+$changelist = "-" + $versionSplit[1]
 $doc.Element($ns + "version").Value = "`${revision}`${changelist}"
 
 # Modify properties
 $elProperties = $doc.Element($ns + "properties")
-$elProperties.AddFirst([System.Xml.Linq.XElement]::New($ns + "changelist", "-SNAPSHOT"))
-$elProperties.AddFirst([System.Xml.Linq.XElement]::New($ns + "revision", $version))
+$elProperties.AddFirst([System.Xml.Linq.XElement]::New($ns + "changelist", $changelist))
+$elProperties.AddFirst([System.Xml.Linq.XElement]::New($ns + "revision", $revision))
 
 # Modify developers
 $elDevelopers = $doc.Element($ns + "developers")

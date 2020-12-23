@@ -64,7 +64,7 @@ jobs:
       - name: Update sdk/pom.xml
         shell: pwsh
         run: |
-          ./.github/workflows/update-pom-xml.ps1
+          ./.github/workflows/scripts/update-pom-xml.ps1
         env:
           MAVEN_GPG_PLUGIN_VERSION: ${{ env.MAVEN_GPG_PLUGIN_VERSION }}
 
