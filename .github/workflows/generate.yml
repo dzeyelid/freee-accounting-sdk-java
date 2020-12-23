@@ -8,7 +8,7 @@ on:
 
 env:
   PULL_REQUEST_LABEL: auto-generate
-  SCHEMA_URL_TEMP: https://gist.githubusercontent.com/shibayan/3fdf5a66554e5e7ccfe4cc8350db86d7/raw/64548c7ad8bb4c65c0bbe1748ca8f759da648aa6/api-schema.yml
+  SCHEMA_URL_TEMP: https://raw.githubusercontent.com/dzeyelid/freee-api-schema/add-sdk-compatible-schema/_sdk_compatible/open-api-3/api-schema.yml
   KEEP_CURRENT_HEADER_SELECTOR: true
   MAVEN_GPG_PLUGIN_VERSION: 1.6
   
