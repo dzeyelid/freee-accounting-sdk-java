@@ -43,9 +43,9 @@ jobs:
 
             return {apiSchemaReleaseTag, currentSdkVersion};
 
-      - run: echo $RESULT | jq
+      - run: echo $RESULT
         env:
-          RESULT: ${{ steps.run_script.outputs.result }}
+          RESULT: ${{ steps.run_script.outputs.result.currentSdkVersion }}
 
       - name: Calculate next release version
         id: next_release_sdk_version
