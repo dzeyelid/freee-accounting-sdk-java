@@ -31,7 +31,6 @@ jobs:
         uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: string
           script: |
             const { origin_ref } = context.payload.client_payload;
             const words = origin_ref.split('/');
