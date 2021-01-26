@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+    - master
+
+stages:
+- stage: Dev
+  jobs:
+  - job: GetSecretFile
+    pool: 
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - task: DownloadSecureFile@1
+      name: key
+      displayName: 'Download private key file'
+      inputs:
+        secureFile: 'freee.private.asc'
+    - task: PublishPipelineArtifact@1
+      name: publishKeyToBuildArtifacts
+      inputs:
+        targetPath: '$(key.secureFilePath)'
